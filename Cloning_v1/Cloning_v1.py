@@ -66,7 +66,7 @@ for row in csvInput:
 
 
 
-
+print('Testfile at {}'.format(CenterIMGPath[0]))
 image_example = cv2.imread(CenterIMGPath[0],1)
 ImgShape =image_example.shape
 
