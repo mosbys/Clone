@@ -2,6 +2,7 @@ import numpy as np
 #import keras
 import csv
 import cv2
+import os
 import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten, Lambda
@@ -56,9 +57,9 @@ for row in csvInput:
     #print(row)
     #image = cv2.imread(row[0],0)
     SWA_hist.append(row[3])
-    CenterIMGPath.append(row[0].replace(sPathReplace,'.\\IMG'))
-    LeftIMGPath.append(row[1].replace(sPathReplace,'.\\IMG'))
-    RightIMGPath.append(row[2].replace(sPathReplace,'.\\IMG'))
+    CenterIMGPath.append(row[0].replace(sPathReplace,str(os.getcwd())+'./IMG'))
+    LeftIMGPath.append(row[1].replace(sPathReplace,str(os.getcwd())+'./IMG'))
+    RightIMGPath.append(row[2].replace(sPathReplace,str(os.getcwd())+'./IMG'))
     #cv2.imshow('image',image)
     #cv2.waitKey(0)
     #cv2.destroyAllWindows()
