@@ -45,7 +45,7 @@ def save_model(model, model_name='model.json', weights_name='model.h5'):
 
 #sFilePathInput = r'C:\Users\Christoph\Documents\udacity\11_Cloning\simulator-windows-64\driving_log.csv'
 sFilePathInput = r'driving_log.csv'
-sPathReplace = 'C:\\Users\\Christoph\\Documents\\udacity\\11_Cloning\\simulator-windows-64\\IMG'
+sPathReplace = 'C:\\Users\\Christoph\\Documents\\udacity\\11_Cloning\\simulator-windows-64\\IMG\\'
 SWA_hist=[]
 CenterIMGPath = []
 LeftIMGPath = []
