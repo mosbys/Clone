@@ -45,7 +45,7 @@ def save_model(model, model_name='model.json', weights_name='model.h5'):
 
 #sFilePathInput = r'C:\Users\Christoph\Documents\udacity\11_Cloning\simulator-windows-64\driving_log.csv'
 sFilePathInput = r'driving_log.csv'
-sPathReplace = 'C:\\Users\\Christoph\\Documents\\udacity\\11_Cloning\\simulator-windows-64\\IMG\\'
+sPathReplace = 'C:\\Users\\Christoph\\Documents\\udacity\\11_Cloning\\simulator-windows-64\\IMG'
 SWA_hist=[]
 CenterIMGPath = []
 LeftIMGPath = []
@@ -57,9 +57,9 @@ for row in csvInput:
     #print(row)
     #image = cv2.imread(row[0],0)
     SWA_hist.append(row[3])
-    CenterIMGPath.append(row[0].replace(sPathReplace,str(os.getcwd())+'./IMG'))
-    LeftIMGPath.append(row[1].replace(sPathReplace,str(os.getcwd())+'./IMG'))
-    RightIMGPath.append(row[2].replace(sPathReplace,str(os.getcwd())+'./IMG'))
+    CenterIMGPath.append(row[0].replace(sPathReplace,str(os.getcwd())+'.\\IMG'))
+    LeftIMGPath.append(row[1].replace(sPathReplace,str(os.getcwd())+'.\\IMG'))
+    RightIMGPath.append(row[2].replace(sPathReplace,str(os.getcwd())+'.\\IMG'))
     #cv2.imshow('image',image)
     #cv2.waitKey(0)
     #cv2.destroyAllWindows()
