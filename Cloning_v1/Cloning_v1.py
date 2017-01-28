@@ -31,7 +31,7 @@ def generate_next_batch(batch_size=64):
         iIndex = randint(0,len(CenterImg)-64)
         
         X_batch = CenterImg[iIndex:iIndex+64]
-        Y_batch = SWA_hist[iIndex:iIndex+64]
+        y_batch = SWA_hist[iIndex:iIndex+64]
         assert len(X_batch) == batch_size, 'len(X_batch) == batch_size should be True'
 
         yield np.array(X_batch), np.array(y_batch)
