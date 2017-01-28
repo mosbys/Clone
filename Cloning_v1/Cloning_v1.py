@@ -99,7 +99,7 @@ csvInput = csv.reader(File, delimiter=',')
 for row in csvInput:
     #print(row)
     #image = cv2.imread(row[0],0)
-    SWA_hist.append(row[3])
+    SWA_hist.append(float(row[3]))
     CenterIMGPath.append(row[0].replace(sPathReplace,str(os.getcwd())+'/IMG/'))
     LeftIMGPath.append(row[1].replace(sPathReplace,str(os.getcwd())+'/IMG/'))
     RightIMGPath.append(row[2].replace(sPathReplace,str(os.getcwd())+'/IMG/'))
