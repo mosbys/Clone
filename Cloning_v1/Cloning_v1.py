@@ -198,20 +198,20 @@ datagen.fit(CenterImg)
 #                    samples_per_epoch=len(CenterImg), nb_epoch=2)
 
 
-for e in range(2):
-    print('Epoch {}'.format(e))
-    batches = 0
-    for X_batch, Y_batch in datagen.flow(CenterImg, SWA_hist, batch_size=32):
-        t1=time.time()
-        loss = model.fit(X_batch, Y_batch)
-        t2=time.time()
-        print('Time: {}s'.format(t2-t1))
-        batches += 1
-        if batches >= len(X_train) / 32:
-            # we need to break the loop by hand because
-            # the generator loops indefinitely
-            break
+#for e in range(2):
+#    print('Epoch {}'.format(e))
+#    batches = 0
+#    for X_batch, Y_batch in datagen.flow(CenterImg, SWA_hist, batch_size=32):
+#        t1=time.time()
+#        loss = model.fit(X_batch, Y_batch)
+#        t2=time.time()
+#        print('Time: {}s'.format(t2-t1))
+#        batches += 1
+#        if batches >= len(X_train) / 32:
+#            # we need to break the loop by hand because
+#            # the generator loops indefinitely
+#            break
 
-#model.fit(CenterIMG_normalize,SWA_hist,32,1)
+model.fit(CenterIMG_normalize,SWA_hist,32,1)
 
 save_model(model)
