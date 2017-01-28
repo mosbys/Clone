@@ -83,6 +83,7 @@ def save_model(model, model_name='model.json', weights_name='model.h5'):
     #silent_delete(weights_name)
 
     json_string = model.to_json()
+    print(json_string)
     with open(model_name, 'w') as outfile:
         json.dump(json_string, outfile)
 
