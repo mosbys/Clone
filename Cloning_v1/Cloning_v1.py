@@ -17,7 +17,7 @@ import json
 iShowDebugPic =0
 
 
-def generate_next_batch(batch_size=64):
+def generate_next_batch(batch_size=32):
     """
     This generator yields the next training batch
     :param batch_size:
@@ -30,28 +30,28 @@ def generate_next_batch(batch_size=64):
         y_batch = []
         iIndex = randint(0,len(CenterIMGPath)-64)
         
-        CenterImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
+        X_batch = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         #LeftImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         #RightImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
-        SWA_corrected = np.zeros(batch_size)
+        y_batch = np.zeros(batch_size)
 
         for i in range(iIndex,iIndex+64):
             iSelect = randint(0,2)
             if (iSelect==0):
-                CenterImg[i-iIndex] =cv2.imread(CenterIMGPath[i],1)
-                SWA_corrected[i-iIndex] = SWA_hist[i]
+                X_batch[i-iIndex] =cv2.imread(CenterIMGPath[i],1)
+                y_batch[i-iIndex] = SWA_hist[i]
             elif (iSelect==1):
-                CenterImg[i-iIndex] =cv2.imread(LeftIMGPath[i].strip(),1)
-                SWA_corrected[i-iIndex] = SWA_hist[i]-0.2
+                X_batch[i-iIndex] =cv2.imread(LeftIMGPath[i].strip(),1)
+                y_batch[i-iIndex] = SWA_hist[i]-0.2
             elif (iSelect==2):
-                CenterImg[i-iIndex] =cv2.imread(RightIMGPath[i].strip(),1)
-                SWA_corrected[i-iIndex] = SWA_hist[i]+0.2
+                X_batch[i-iIndex] =cv2.imread(RightIMGPath[i].strip(),1)
+                y_batch[i-iIndex] = SWA_hist[i]+0.2
           
 
 
 
-        X_batch = CenterImg
-        y_batch = SWA_corrected
+        #X_batch = CenterImg
+        #y_batch = SWA_corrected
         assert len(X_batch) == batch_size, 'len(X_batch) == batch_size should be True'
 
         yield np.array(X_batch), np.array(y_batch)
