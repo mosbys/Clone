@@ -212,6 +212,6 @@ datagen.fit(CenterImg)
 #            # the generator loops indefinitely
 #            break
 
-model.fit(CenterIMG_normalize,SWA_hist,32,1)
+model.fit(CenterIMG,SWA_hist,32,1)
 
 save_model(model)
