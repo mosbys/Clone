@@ -35,7 +35,7 @@ def generate_next_batch(batch_size=32):
         #RightImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         y_batch = np.zeros(batch_size)
 
-        for i in range(iIndex,iIndex+64):
+        for i in range(iIndex,iIndex+batch_size):
             iSelect = randint(0,2)
             if (iSelect==0):
                 X_batch[i-iIndex] =cv2.imread(CenterIMGPath[i],1)
