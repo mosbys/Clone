@@ -31,6 +31,7 @@ def generate_next_batch(batch_size=16):
         iIndex = randint(0,len(CenterIMGPath)-batch_size)
         
         X_batch = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
+        X_batch = np.zeros([batch_size,64,64,ImgShape[2]])
         #LeftImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         #RightImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         y_batch = np.zeros(batch_size)
