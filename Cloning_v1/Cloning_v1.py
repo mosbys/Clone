@@ -12,7 +12,7 @@ from keras.preprocessing.image import ImageDataGenerator
 
 import tensorflow as tf
 
-iShowDebugPic =1
+iShowDebugPic =0
 
 def normalize_grayscale(image_data):
     a = -0.5
