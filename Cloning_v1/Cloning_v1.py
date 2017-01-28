@@ -12,6 +12,7 @@ from keras.optimizers import SGD,Adam
 from keras.preprocessing.image import ImageDataGenerator
 
 import tensorflow as tf
+import json
 
 iShowDebugPic =0
 
@@ -212,7 +213,7 @@ datagen.fit(CenterImg)
 #            # the generator loops indefinitely
 #            break
 t1=time.time()
-model.fit(CenterImg,SWA_hist,32,1)
+model.fit(CenterImg,SWA_hist,32,8)
 t2=time.time()
 print('Time: {}s'.format(t2-t1))
 save_model(model)
