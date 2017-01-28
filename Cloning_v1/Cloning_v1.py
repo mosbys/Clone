@@ -17,7 +17,7 @@ import json
 iShowDebugPic =0
 
 
-def generate_next_batch(batch_size=32):
+def generate_next_batch(batch_size=16):
     """
     This generator yields the next training batch
     :param batch_size:
@@ -26,9 +26,9 @@ def generate_next_batch(batch_size=32):
         A tuple of features and steering angles as two numpy arrays
     """
     while True:
-        X_batch = []
-        y_batch = []
-        iIndex = randint(0,len(CenterIMGPath)-64)
+        #X_batch = []
+        #y_batch = []
+        iIndex = randint(0,len(CenterIMGPath)-batch_size)
         
         X_batch = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         #LeftImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
@@ -38,17 +38,19 @@ def generate_next_batch(batch_size=32):
         for i in range(iIndex,iIndex+batch_size):
             iSelect = randint(0,2)
             if (iSelect==0):
-                X_batch[i-iIndex] =cv2.imread(CenterIMGPath[i],1)
-                y_batch[i-iIndex] = SWA_hist[i]
+                tmpImg = cv2.imread(CenterIMGPath[i],1)
+                
+                #X_batch[i-iIndex] =cv2.imread(CenterIMGPath[i],1)
+                
             elif (iSelect==1):
-                X_batch[i-iIndex] =cv2.imread(LeftIMGPath[i].strip(),1)
-                y_batch[i-iIndex] = SWA_hist[i]-0.2
+                tmpImg =cv2.imread(LeftIMGPath[i].strip(),1)
+                #y_batch[i-iIndex] = SWA_hist[i]-0.2
             elif (iSelect==2):
-                X_batch[i-iIndex] =cv2.imread(RightIMGPath[i].strip(),1)
-                y_batch[i-iIndex] = SWA_hist[i]+0.2
-          
-
-
+                tmpImg =cv2.imread(RightIMGPath[i].strip(),1)
+               #y_batch[i-iIndex] = SWA_hist[i]+0.2
+            
+            X_batch[i-iIndex] = cv2.resize(tmpImg,(64, 64), interpolation = cv2.INTER_CUBIC)
+            y_batch[i-iIndex] = SWA_hist[i]
 
         #X_batch = CenterImg
         #y_batch = SWA_corrected
@@ -161,9 +163,9 @@ activation_relu = 'relu'
 # Source:  https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf
 model = Sequential()
 
-model.add(Lambda(lambda x: x/255.-0.5,input_shape=(160, 320, 3)))
+model.add(Lambda(lambda x: x/255.-0.5,input_shape=(64, 64, 3)))
 
-model.add(Convolution2D(24, 5, 5, border_mode='same', input_shape=(160, 320, 3)))
+model.add(Convolution2D(24, 5, 5, border_mode='same', input_shape=(64, 64, 3)))
 model.add(Activation(activation_relu))
 model.add(Dropout(0.5))
 model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
