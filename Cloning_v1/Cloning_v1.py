@@ -215,37 +215,16 @@ model.compile(optimizer=SGD(learning_rate), loss="mse", )
 
 
 
-datagen = ImageDataGenerator(
-    featurewise_center=True,
-    featurewise_std_normalization=True,
-    rotation_range=20,
-    width_shift_range=0.2,
-    height_shift_range=0.2,
-    horizontal_flip=False)
 
-# compute quantities required for featurewise normalization
-# (std, mean, and principal components if ZCA whitening is applied)
-datagen.fit(CenterImg)
+
+t1=time.time()
 
 # fits the model on batches with real-time data augmentation:
-model.fit_generator(generate_next_batch(),samples_per_epoch=len(CenterImg), nb_epoch=2)
+model.fit_generator(generate_next_batch(),samples_per_epoch=len(CenterIMGPath), nb_epoch=2)
 
 
-#for e in range(2):
-#    print('Epoch {}'.format(e))
-#    batches = 0
-#    for X_batch, Y_batch in datagen.flow(CenterImg, SWA_hist, batch_size=32):
-#        t1=time.time()
-#        loss = model.fit(X_batch, Y_batch)
-#        t2=time.time()
-#        print('Time: {}s'.format(t2-t1))
-#        batches += 1
-#        if batches >= len(X_train) / 32:
-#            # we need to break the loop by hand because
-#            # the generator loops indefinitely
-#            break
-t1=time.time()
-model.fit(CenterImg,SWA_hist,32,8)
+
+
 t2=time.time()
 print('Time: {}s'.format(t2-t1))
 save_model(model)
