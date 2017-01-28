@@ -193,9 +193,20 @@ datagen = ImageDataGenerator(
 datagen.fit(CenterImg)
 
 # fits the model on batches with real-time data augmentation:
-model.fit_generator(datagen.flow(CenterImg, SWA_hist, batch_size=32),
-                    samples_per_epoch=len(CenterImg), nb_epoch=2)
+#model.fit_generator(datagen.flow(CenterImg, SWA_hist, batch_size=32),
+#                    samples_per_epoch=len(CenterImg), nb_epoch=2)
 
+
+for e in range(2):
+    print('Epoch {}'.format(e))
+    batches = 0
+    for X_batch, Y_batch in datagen.flow(CenterImg, SWA_hist, batch_size=32):
+        loss = model.train(X_batch, Y_batch)
+        batches += 1
+        if batches >= len(X_train) / 32:
+            # we need to break the loop by hand because
+            # the generator loops indefinitely
+            break
 
 #model.fit(CenterIMG_normalize,SWA_hist,32,1)
 
