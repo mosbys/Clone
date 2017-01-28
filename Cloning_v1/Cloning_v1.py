@@ -33,19 +33,19 @@ def generate_next_batch(batch_size=64):
         CenterImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         #LeftImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         #RightImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
-        SWA_corrected = np.zeros([batch_size])
+        SWA_corrected = np.zeros(batch_size)
 
         for i in range(iIndex,iIndex+64):
             iSelect = randint(0,2)
             if (iSelect==0):
-                CenterImg[i] =cv2.imread(CenterIMGPath[i],1)
-                SWA_corrected = SWA_hist[i]
+                CenterImg[i-iIndex] =cv2.imread(CenterIMGPath[i],1)
+                SWA_corrected[i-iIndex] = SWA_hist[i]
             elif (iSelect==1):
-                CenterImg[i] =cv2.imread(LeftIMGPath[i].strip(),1)
-                SWA_corrected = SWA_hist[i]-0.2
+                CenterImg[i-iIndex] =cv2.imread(LeftIMGPath[i].strip(),1)
+                SWA_corrected[i-iIndex] = SWA_hist[i]-0.2
             elif (iSelect==2):
-                CenterImg[i] =cv2.imread(RightIMGPath[i].strip(),1)
-                SWA_corrected = SWA_hist[i]+0.2
+                CenterImg[i-iIndex] =cv2.imread(RightIMGPath[i].strip(),1)
+                SWA_corrected[i-iIndex] = SWA_hist[i]+0.2
           
 
 
