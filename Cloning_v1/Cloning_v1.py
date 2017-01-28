@@ -28,10 +28,30 @@ def generate_next_batch(batch_size=64):
     while True:
         X_batch = []
         y_batch = []
-        iIndex = randint(0,len(CenterImg)-64)
+        iIndex = randint(0,len(CenterIMGPath)-64)
         
-        X_batch = CenterImg[iIndex:iIndex+64]
-        y_batch = SWA_hist[iIndex:iIndex+64]
+        CenterImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
+        #LeftImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
+        #RightImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
+        SWA_corrected = np.zeros([batch_size])
+
+        for i in range(iIndex,iIndex+64):
+            iSelect = randint(0,2)
+            if (iSelect==0):
+                CenterImg[i] =cv2.imread(CenterIMGPath[i],1)
+                SWA_corrected = SWA_hist[i]
+            elif (iSelect==1):
+                CenterImg[i] =cv2.imread(LeftIMGPath[i].strip(),1)
+                SWA_corrected = SWA_hist[i]-0.2
+            elif (iSelect==2):
+                CenterImg[i] =cv2.imread(RightIMGPath[i].strip(),1)
+                SWA_corrected = SWA_hist[i]+0.2
+          
+
+
+
+        X_batch = CenterImg
+        y_batch = SWA_corrected
         assert len(X_batch) == batch_size, 'len(X_batch) == batch_size should be True'
 
         yield np.array(X_batch), np.array(y_batch)
@@ -94,14 +114,6 @@ print('Testfile at {}'.format(CenterIMGPath[0]))
 image_example = cv2.imread(CenterIMGPath[0],1)
 ImgShape =image_example.shape
 
-CenterImg = np.zeros([len(CenterIMGPath),ImgShape[0],ImgShape[1],ImgShape[2]])
-LeftImg = np.zeros([len(LeftIMGPath),ImgShape[0],ImgShape[1],ImgShape[2]])
-RightImg = np.zeros([len(RightIMGPath),ImgShape[0],ImgShape[1],ImgShape[2]])
-
-for i in range(0,len(CenterIMGPath)):
-    CenterImg[i] =cv2.imread(CenterIMGPath[i],1)
-    LeftImg[i] = cv2.imread(LeftIMGPath[i].strip(),1)
-    RightImg[i] = cv2.imread(RightIMGPath[i].strip(),1)
 
 
 
@@ -124,9 +136,9 @@ if (iShowDebugPic==1):
 
 #### NN
 #SWA_hist = SWA_hist[0:100]
-CenterIMGPath =CenterIMGPath[0:100]
-LeftIMGPath =LeftIMGPath[0:100]
-RightIMGPath =  RightIMGPath[0:100]
+#CenterIMGPath =CenterIMGPath[0:100]
+#LeftIMGPath =LeftIMGPath[0:100]
+#RightIMGPath =  RightIMGPath[0:100]
 tf.python.control_flow_ops = tf
 
 
