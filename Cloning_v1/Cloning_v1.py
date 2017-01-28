@@ -10,11 +10,32 @@ from keras.layers import Dense, Dropout, Activation, Flatten, Lambda
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.optimizers import SGD,Adam
 from keras.preprocessing.image import ImageDataGenerator
-
+from random import randint
 import tensorflow as tf
 import json
 
 iShowDebugPic =0
+
+
+def generate_next_batch(batch_size=64):
+    """
+    This generator yields the next training batch
+    :param batch_size:
+        Number of training images in a single batch
+    :return:
+        A tuple of features and steering angles as two numpy arrays
+    """
+    while True:
+        X_batch = []
+        y_batch = []
+        iIndex = randint(0,len(CenterImg)-64)
+        
+        X_batch = CenterImg[iIndex:iIndex+64]
+        Y_batch = SWA_hist[iIndex:iIndex+64]
+        assert len(X_batch) == batch_size, 'len(X_batch) == batch_size should be True'
+
+        yield np.array(X_batch), np.array(y_batch)
+
 
 def normalize_grayscale(image_data):
     a = -0.5
@@ -195,8 +216,7 @@ datagen = ImageDataGenerator(
 datagen.fit(CenterImg)
 
 # fits the model on batches with real-time data augmentation:
-#model.fit_generator(datagen.flow(CenterImg, SWA_hist, batch_size=32),
-#                    samples_per_epoch=len(CenterImg), nb_epoch=2)
+model.fit_generator(generate_next_batch(),samples_per_epoch=len(CenterImg), nb_epoch=2)
 
 
 #for e in range(2):
