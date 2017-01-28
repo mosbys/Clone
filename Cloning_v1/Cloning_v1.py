@@ -212,7 +212,7 @@ datagen.fit(CenterImg)
 #            # the generator loops indefinitely
 #            break
 t1=time.time()
-model.fit(CenterIMG,SWA_hist,32,1)
+model.fit(CenterImg,SWA_hist,32,1)
 t2=time.time()
 print('Time: {}s'.format(t2-t1))
 save_model(model)
