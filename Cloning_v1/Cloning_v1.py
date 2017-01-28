@@ -3,6 +3,7 @@ import numpy as np
 import csv
 import cv2
 import os
+import time
 import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten, Lambda
@@ -201,7 +202,10 @@ for e in range(2):
     print('Epoch {}'.format(e))
     batches = 0
     for X_batch, Y_batch in datagen.flow(CenterImg, SWA_hist, batch_size=32):
-        loss = model.train(X_batch, Y_batch)
+        t1=time.time()
+        loss = model.fit(X_batch, Y_batch)
+        t2=time.time()
+        print('Time: {}s'.format(t2-t1))
         batches += 1
         if batches >= len(X_train) / 32:
             # we need to break the loop by hand because
