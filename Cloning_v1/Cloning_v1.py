@@ -50,7 +50,7 @@ def generate_next_batch(batch_size=16):
                 tmpImg =cv2.imread(RightIMGPath[i].strip(),1)
                #y_batch[i-iIndex] = SWA_hist[i]+0.2
             
-            X_batch[i-iIndex] = cv2.resize(tmpImg,(2*64, 64), interpolation = cv2.INTER_CUBIC)
+            X_batch[i-iIndex] = cv2.resize(tmpImg,(64, 2*64), interpolation = cv2.INTER_CUBIC)
             y_batch[i-iIndex] = SWA_hist[i]
 
         #X_batch = CenterImg
