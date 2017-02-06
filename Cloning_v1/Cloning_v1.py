@@ -292,7 +292,7 @@ model.summary()
 t1=time.time()
 
 # fits the model on batches with real-time data augmentation:
-model.fit_generator(generate_next_batch(),samples_per_epoch=len(CenterIMGPath), nb_epoch=1)
+model.fit_generator(generate_next_batch(),samples_per_epoch=len(CenterIMGPath), nb_epoch=8)
 
 
 
