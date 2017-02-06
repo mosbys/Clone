@@ -10,6 +10,11 @@ from keras.layers import Dense, Dropout, Activation, Flatten, Lambda
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.optimizers import SGD,Adam
 from keras.preprocessing.image import ImageDataGenerator
+
+from keras import models, optimizers, backend
+from keras.layers import core, convolutional, pooling
+
+
 from random import randint
 import tensorflow as tf
 import json
@@ -208,7 +213,7 @@ activation_relu = 'relu'
 
 
 # try to use other model
-model = Sequential()
+model = models.Sequential()
 model.add(convolutional.Convolution2D(16, 3, 3, input_shape=(2*64, 64, 3), activation='relu'))
 model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
 model.add(convolutional.Convolution2D(32, 3, 3, activation='relu'))
