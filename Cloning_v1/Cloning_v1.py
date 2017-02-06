@@ -208,6 +208,7 @@ activation_relu = 'relu'
 
 
 # try to use other model
+model = Sequential()
 model.add(convolutional.Convolution2D(16, 3, 3, input_shape=(2*64, 64, 3), activation='relu'))
 model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
 model.add(convolutional.Convolution2D(32, 3, 3, activation='relu'))
