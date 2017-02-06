@@ -154,59 +154,81 @@ activation_relu = 'relu'
 
 # Our model is based on NVIDIA's "End to End Learning for Self-Driving Cars" paper
 # Source:  https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf
-model = Sequential()
+#model = Sequential()
 
-model.add(Lambda(lambda x: x/255.-0.5,input_shape=(2*64, 64, 3)))
+#model.add(Lambda(lambda x: x/255.-0.5,input_shape=(2*64, 64, 3)))
 
-model.add(Convolution2D(24, 5, 5, border_mode='same', input_shape=(2*64, 64, 3)))
-model.add(Activation(activation_relu))
-#model.add(Dropout(0.5))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+#model.add(Convolution2D(24, 5, 5, border_mode='same', input_shape=(2*64, 64, 3)))
+#model.add(Activation(activation_relu))
+##model.add(Dropout(0.5))
+#model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
 
-model.add(Convolution2D(36, 5, 5, border_mode='same', subsample=(2, 2)))
-model.add(Activation(activation_relu))
-#model.add(Dropout(0.5))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+#model.add(Convolution2D(36, 5, 5, border_mode='same', subsample=(2, 2)))
+#model.add(Activation(activation_relu))
+##model.add(Dropout(0.5))
+#model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
 
-model.add(Convolution2D(48, 5, 5, border_mode='same', subsample=(2, 2)))
-model.add(Activation(activation_relu))
-#model.add(Dropout(0.5))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+#model.add(Convolution2D(48, 5, 5, border_mode='same', subsample=(2, 2)))
+#model.add(Activation(activation_relu))
+##model.add(Dropout(0.5))
+#model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
 
-model.add(Convolution2D(64, 3, 3, border_mode='same', subsample=(1, 1)))
-model.add(Activation(activation_relu))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+#model.add(Convolution2D(64, 3, 3, border_mode='same', subsample=(1, 1)))
+#model.add(Activation(activation_relu))
+#model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
 
-model.add(Convolution2D(64, 3, 3, border_mode='same', subsample=(1, 1)))
-model.add(Activation(activation_relu))
-#model.add(Dropout(0.5))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+#model.add(Convolution2D(64, 3, 3, border_mode='same', subsample=(1, 1)))
+#model.add(Activation(activation_relu))
+##model.add(Dropout(0.5))
+#model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
 
-model.add(Flatten())
+#model.add(Flatten())
 
-# Next, five fully connected layers
-model.add(Dense(1164))
-#model.add(Dropout(0.5))
-model.add(Activation(activation_relu))
+## Next, five fully connected layers
+#model.add(Dense(1164))
+##model.add(Dropout(0.5))
+#model.add(Activation(activation_relu))
 
 
-model.add(Dense(100))
-#model.add(Dropout(0.5))
-model.add(Activation(activation_relu))
+#model.add(Dense(100))
+##model.add(Dropout(0.5))
+#model.add(Activation(activation_relu))
 
-model.add(Dense(50))
-#model.add(Dropout(0.5))
-model.add(Activation(activation_relu))
+#model.add(Dense(50))
+##model.add(Dropout(0.5))
+#model.add(Activation(activation_relu))
 
-model.add(Dense(10))
-#model.add(Dropout(0.5))
-model.add(Activation(activation_relu))
+#model.add(Dense(10))
+##model.add(Dropout(0.5))
+#model.add(Activation(activation_relu))
 
-model.add(Dense(1))
+#model.add(Dense(1))
+#model.compile(optimizer=Adam(learning_rate), loss="mse", )
+
+
+
+# try to use other model
+model.add(convolutional.Convolution2D(16, 3, 3, input_shape=(2*64, 64, 3), activation='relu'))
+model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
+model.add(convolutional.Convolution2D(32, 3, 3, activation='relu'))
+model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
+model.add(convolutional.Convolution2D(64, 3, 3, activation='relu'))
+model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
+model.add(core.Flatten())
+model.add(core.Dense(500, activation='relu'))
+model.add(core.Dropout(.5))
+model.add(core.Dense(100, activation='relu'))
+model.add(core.Dropout(.25))
+model.add(core.Dense(20, activation='relu'))
+model.add(core.Dense(1))
+model.compile(optimizer=optimizers.Adam(lr=1e-04), loss='mean_squared_error')
+
+
+
 
 model.summary()
 
-model.compile(optimizer=Adam(learning_rate), loss="mse", )
+
 
 
 
