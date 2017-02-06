@@ -69,18 +69,8 @@ def normalize_grayscale(image_data):
 
 def save_model(model, model_name='model.json', weights_name='model.h5'):
     """
-    Save the model into the hard disk
-    :param model:
-        Keras model to be saved
-    :param model_name:
-        The name of the model file
-    :param weights_name:
-        The name of the weight file
-    :return:
-        None
+    Model save
     """
-    #silent_delete(model_name)
-    #silent_delete(weights_name)
 
     json_string = model.to_json()
     print(json_string)
@@ -216,7 +206,7 @@ model.add(Dense(1))
 
 model.summary()
 
-model.compile(optimizer=SGD(learning_rate), loss="mse", )
+model.compile(optimizer=Adam(learning_rate), loss="mse", )
 
 
 
