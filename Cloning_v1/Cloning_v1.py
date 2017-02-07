@@ -50,10 +50,10 @@ def generate_next_batch(batch_size=16):
                 
             elif (iSelect==1):
                 tmpImg =cv2.imread(LeftIMGPath[i].strip(),1)
-                #y_batch[i-iIndex] = SWA_hist[i]-0.2
+                y_batch[i-iIndex] = SWA_hist[i]-0.2
             elif (iSelect==2):
                 tmpImg =cv2.imread(RightIMGPath[i].strip(),1)
-               #y_batch[i-iIndex] = SWA_hist[i]+0.2
+               y_batch[i-iIndex] = SWA_hist[i]+0.2
             
 
             if (iShowDebugPic==2):
@@ -147,10 +147,7 @@ if (iShowDebugPic==1):
   
 
 #### NN
-#SWA_hist = SWA_hist[0:100]
-#CenterIMGPath =CenterIMGPath[0:100]
-#LeftIMGPath =LeftIMGPath[0:100]
-#RightIMGPath =  RightIMGPath[0:100]
+
 tf.python.control_flow_ops = tf
 
 
