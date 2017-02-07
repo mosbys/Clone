@@ -19,7 +19,7 @@ from random import randint
 import tensorflow as tf
 import json
 
-iShowDebugPic =0
+iShowDebugPic =3
 
 
 def generate_next_batch(batch_size=16):
@@ -131,9 +131,6 @@ ImgShape =image_example.shape
 
 
 if (iShowDebugPic==1):
-
-
-
     plt.subplot(231)   
     plt.imshow(LeftImg[30])
     plt.subplot(232)   
@@ -141,7 +138,10 @@ if (iShowDebugPic==1):
     plt.subplot(233)   
     plt.imshow(RightImg[30])
     plt.show()
-    
+
+if (iShowDebugPic==3):
+    plt.hist(SWA_hist)  
+    plt.savefig("histSWA.png")
    
     
   
