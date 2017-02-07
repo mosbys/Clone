@@ -20,7 +20,15 @@ import tensorflow as tf
 import json
 
 iShowDebugPic =0
-
+def preprocess(image, top_offset=.375, bottom_offset=.125):
+    """
+    Applies preprocessing pipeline to an image: crops `top_offset` and `bottom_offset`
+    portions of image, resizes to 32x128 px and scales pixel values to [0, 1].
+    """
+    top = int(top_offset * image.shape[0])
+    bottom = int(bottom_offset * image.shape[0])
+    image = image[top:-bottom, :]
+    return image
 
 def generate_next_batch(batch_size=16):
     """
@@ -57,17 +65,32 @@ def generate_next_batch(batch_size=16):
             
 
             if (iShowDebugPic==2):
-                #plt.subplot(231)   
+                plt.subplot(321)   
                 plt.imshow(tmpImg)
-                plt.show()
-                #plt.subplot(232)   
+                #plt.show()
+                plt.subplot(322)   
                 plt.imshow(cv2.resize(tmpImg,(2*64, 64), interpolation = cv2.INTER_CUBIC))
-                plt.show()
-                #plt.subplot(233)   
-                plt.imshow(cv2.resize(tmpImg,(64, 2*64), interpolation = cv2.INTER_CUBIC))
-                plt.show()
+                #plt.show()
+                plt.subplot(323)   
+                plt.imshow(preprocess(tmpImg))
+                
+                plt.subplot(324)   
+                plt.imshow(cv2.resize(preprocess(tmpImg),(2*64, 64), interpolation = cv2.INTER_CUBIC))
 
-            X_batch[i-iIndex] = cv2.resize(tmpImg,(2*64, 64), interpolation = cv2.INTER_CUBIC)
+                plt.subplot(325)   
+                tmpImg2 = tmpImg[ :, ::-1, :]
+                plt.imshow(tmpImg2)
+                plt.subplot(326)   
+                plt.imshow(cv2.resize(preprocess(tmpImg2),(2*64, 64), interpolation = cv2.INTER_CUBIC))
+                
+                plt.show()
+               
+            iFlipImg = randint(0,2)
+            if (iFlipImg>1):
+                tmpImg = tmpImg[ :, ::-1, :]
+                y_batch[i-iIndex] = -y_batch[i-iIndex]
+
+            X_batch[i-iIndex] = cv2.resize(preprocess(tmpImg),(2*64, 64), interpolation = cv2.INTER_CUBIC)
             #y_batch[i-iIndex] = SWA_hist[i]
 
         #X_batch = CenterImg
@@ -152,7 +175,7 @@ tf.python.control_flow_ops = tf
 
 
 
-while (iShowDebugPic==2):
+while (iShowDebugPic==6):
         #X_batch = []
         #y_batch = []
     batch_size=16
@@ -179,16 +202,26 @@ while (iShowDebugPic==2):
                #y_batch[i-iIndex] = SWA_hist[i]+0.2
             
 
-        if (iShowDebugPic==2):
-            plt.subplot(231)   
-            plt.imshow(tmpImg)
-            #plt.show()
-            plt.subplot(232)   
-            plt.imshow(cv2.resize(tmpImg,(2*64, 64), interpolation = cv2.INTER_CUBIC))
-            #plt.show()
-            plt.subplot(233)   
-            plt.imshow(cv2.resize(tmpImg,(64, 2*64), interpolation = cv2.INTER_CUBIC))
-            plt.show()
+        if (iShowDebugPic==6):
+                plt.subplot(321)   
+                plt.imshow(tmpImg)
+                #plt.show()
+                plt.subplot(322)   
+                plt.imshow(cv2.resize(tmpImg,(2*64, 64), interpolation = cv2.INTER_CUBIC))
+                #plt.show()
+                plt.subplot(323)   
+                plt.imshow(preprocess(tmpImg))
+                
+                plt.subplot(324)   
+                plt.imshow(cv2.resize(preprocess(tmpImg),(2*64, 64), interpolation = cv2.INTER_CUBIC))
+
+                plt.subplot(325)   
+                tmpImg2 = tmpImg[ :, ::-1, :]
+                plt.imshow(tmpImg2)
+                plt.subplot(326)   
+                plt.imshow(cv2.resize(preprocess(tmpImg2),(2*64, 64), interpolation = cv2.INTER_CUBIC))
+                
+                plt.show()
 
 
 
