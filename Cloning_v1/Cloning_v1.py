@@ -53,7 +53,7 @@ def generate_next_batch(batch_size=16):
                 y_batch[i-iIndex] = SWA_hist[i]-0.2
             elif (iSelect==2):
                 tmpImg =cv2.imread(RightIMGPath[i].strip(),1)
-               y_batch[i-iIndex] = SWA_hist[i]+0.2
+                y_batch[i-iIndex] = SWA_hist[i]+0.2
             
 
             if (iShowDebugPic==2):
