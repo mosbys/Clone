@@ -41,7 +41,7 @@ def generate_next_batch(batch_size=16):
     while True:
         #X_batch = []
         #y_batch = []
-        iIndex = randint(0,len(CenterIMGPath)-batch_size)
+        #iIndex = randint(0,len(CenterIMGPath)-batch_size)
         
         #X_batch = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         X_batch = np.zeros([batch_size,64,2*64,ImgShape[2]])
@@ -49,8 +49,11 @@ def generate_next_batch(batch_size=16):
         #RightImg = np.zeros([batch_size,ImgShape[0],ImgShape[1],ImgShape[2]])
         y_batch = np.zeros(batch_size)
 
-        for i in range(iIndex,iIndex+batch_size):
+        #for i in range(iIndex,iIndex+batch_size):
+        i=0
+        while (i<16):
             iSelect = randint(0,2)
+            iIndex = randint(0,len(CenterIMGPath)-batch_size)
             if (iSelect==0):
                 tmpImg = cv2.imread(CenterIMGPath[i],1)
                 y_batch[i-iIndex] = SWA_hist[i]
@@ -58,10 +61,10 @@ def generate_next_batch(batch_size=16):
                 
             elif (iSelect==1):
                 tmpImg =cv2.imread(LeftIMGPath[i].strip(),1)
-                y_batch[i-iIndex] = SWA_hist[i]+0.25
+                y_batch[i] = SWA_hist[i]+0.25
             elif (iSelect==2):
                 tmpImg =cv2.imread(RightIMGPath[i].strip(),1)
-                y_batch[i-iIndex] = SWA_hist[i]-0.25
+                y_batch[i] = SWA_hist[i]-0.25
             
 
             if (iShowDebugPic==2):
@@ -88,9 +91,13 @@ def generate_next_batch(batch_size=16):
             iFlipImg = randint(0,2)
             if (iFlipImg>1):
                 tmpImg = tmpImg[ :, ::-1, :]
-                y_batch[i-iIndex] = -y_batch[i-iIndex]
+                y_batch[i] = -y_batch[i]
 
-            X_batch[i-iIndex] = cv2.resize(preprocess(tmpImg),(2*64, 64), interpolation = cv2.INTER_CUBIC)
+            X_batch[i] = cv2.resize(preprocess(tmpImg),(2*64, 64), interpolation = cv2.INTER_CUBIC)
+            if (abs(y_batch[i])<0.03):
+                i=i
+            else:
+                i=i+1
             #y_batch[i-iIndex] = SWA_hist[i]
 
         #X_batch = CenterImg
