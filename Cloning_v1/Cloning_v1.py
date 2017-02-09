@@ -56,7 +56,7 @@ def generate_next_batch(batch_size=16):
             iIndex = randint(0,len(CenterIMGPath)-batch_size)
             if (iSelect==0):
                 tmpImg = cv2.imread(CenterIMGPath[i],1)
-                y_batch[i-iIndex] = SWA_hist[i]
+                y_batch[i] = SWA_hist[i]
                 #X_batch[i-iIndex] =cv2.imread(CenterIMGPath[i],1)
                 
             elif (iSelect==1):
