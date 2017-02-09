@@ -11,10 +11,10 @@ from PIL import Image
 from PIL import ImageOps
 from flask import Flask, render_template
 from io import BytesIO
-
+from random import randint
 from keras.models import model_from_json
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array
-
+import cv2
 # Fix error with Keras and TensorFlow
 import tensorflow as tf
 tf.python.control_flow_ops = tf
@@ -24,6 +24,17 @@ sio = socketio.Server()
 app = Flask(__name__)
 model = None
 prev_image_array = None
+
+def preprocess(image, top_offset=.375, bottom_offset=.125):
+    """
+    Applies preprocessing pipeline to an image: crops `top_offset` and `bottom_offset`
+    portions of image, resizes to 32x128 px and scales pixel values to [0, 1].
+    """
+    top = int(top_offset * image.shape[0])
+    bottom = int(bottom_offset * image.shape[0])
+    image = image[top:-bottom, :]
+    return image
+
 
 @sio.on('telemetry')
 def telemetry(sid, data):
@@ -37,10 +48,15 @@ def telemetry(sid, data):
     imgString = data["image"]
     image = Image.open(BytesIO(base64.b64decode(imgString)))
     image_array = np.asarray(image)
+    image_array=preprocess(image_array)
+    image_array=cv2.resize(image_array,(2*64, 64),interpolation=cv2.INTER_CUBIC)
     transformed_image_array = image_array[None, :, :, :]
+    #transformed_image_array2 = np.zeros([1,2*64,64,3])
+    #transformed_image_array2[0]=cv2.resize(transformed_image_array[0],(2*64, 64),interpolation=cv2.INTER_CUBIC)
     # This model currently assumes that the features of the model are just the images. Feel free to change this.
     steering_angle = float(model.predict(transformed_image_array, batch_size=1))
     # The driving model currently just outputs a constant throttle. Feel free to edit this.
+    #steering_angle = randint(0,100)/100*randint(-1,1);
     throttle = 0.2
     print(steering_angle, throttle)
     send_control(steering_angle, throttle)

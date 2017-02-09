@@ -10,7 +10,7 @@ from keras.layers import Dense, Dropout, Activation, Flatten, Lambda
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.optimizers import SGD,Adam
 from keras.preprocessing.image import ImageDataGenerator
-
+import random
 from keras import models, optimizers, backend
 from keras.layers import core, convolutional, pooling
 
@@ -19,7 +19,7 @@ from random import randint
 import tensorflow as tf
 import json
 
-iShowDebugPic =0
+iShowDebugPic =6
 def preprocess(image, top_offset=.375, bottom_offset=.125):
     """
     Applies preprocessing pipeline to an image: crops `top_offset` and `bottom_offset`
@@ -58,10 +58,10 @@ def generate_next_batch(batch_size=16):
                 
             elif (iSelect==1):
                 tmpImg =cv2.imread(LeftIMGPath[i].strip(),1)
-                y_batch[i-iIndex] = SWA_hist[i]+0.2
+                y_batch[i-iIndex] = SWA_hist[i]+0.25
             elif (iSelect==2):
                 tmpImg =cv2.imread(RightIMGPath[i].strip(),1)
-                y_batch[i-iIndex] = SWA_hist[i]-0.2
+                y_batch[i-iIndex] = SWA_hist[i]-0.25
             
 
             if (iShowDebugPic==2):
@@ -203,24 +203,37 @@ while (iShowDebugPic==6):
             
 
         if (iShowDebugPic==6):
-                plt.subplot(321)   
+                plt.subplot(421)   
                 plt.imshow(tmpImg)
                 #plt.show()
-                plt.subplot(322)   
+                plt.subplot(422)   
                 plt.imshow(cv2.resize(tmpImg,(2*64, 64), interpolation = cv2.INTER_CUBIC))
                 #plt.show()
-                plt.subplot(323)   
+                plt.subplot(423)   
                 plt.imshow(preprocess(tmpImg))
                 
-                plt.subplot(324)   
+                plt.subplot(424)   
                 plt.imshow(cv2.resize(preprocess(tmpImg),(2*64, 64), interpolation = cv2.INTER_CUBIC))
 
-                plt.subplot(325)   
+                plt.subplot(425)   
                 tmpImg2 = tmpImg[ :, ::-1, :]
                 plt.imshow(tmpImg2)
-                plt.subplot(326)   
+                plt.subplot(426)   
                 plt.imshow(cv2.resize(preprocess(tmpImg2),(2*64, 64), interpolation = cv2.INTER_CUBIC))
+                v_delta = .05
+                tmpImg3 = preprocess(
+                    tmpImg,
+                    top_offset=random.uniform(.375 - v_delta, .375 + v_delta),
+                    bottom_offset=random.uniform(.125 - v_delta, .125 + v_delta)
+                )
+                plt.subplot(427)
+                plt.imshow(preprocess(tmpImg3))
                 
+                plt.subplot(428)   
+                plt.imshow(cv2.resize(preprocess(tmpImg3),(2*64, 64), interpolation = cv2.INTER_CUBIC))
+
+
+
                 plt.show()
 
 
@@ -291,22 +304,7 @@ model.compile(optimizer=Adam(learning_rate), loss="mse", )
 
 
 
-# try to use other model
-#model = models.Sequential()
-#model.add(convolutional.Convolution2D(16, 3, 3, input_shape=(64, 2*64, 3), activation='relu'))
-#model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
-#model.add(convolutional.Convolution2D(32, 3, 3, activation='relu'))
-#model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
-#model.add(convolutional.Convolution2D(64, 3, 3, activation='relu'))
-#model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
-#model.add(core.Flatten())
-#model.add(core.Dense(500, activation='relu'))
-#model.add(core.Dropout(.5))
-#model.add(core.Dense(100, activation='relu'))
-#model.add(core.Dropout(.25))
-#model.add(core.Dense(20, activation='relu'))
-#model.add(core.Dense(1))
-#model.compile(optimizer=optimizers.Adam(lr=1e-04), loss='mean_squared_error')
+
 
 
 
@@ -322,7 +320,7 @@ model.summary()
 t1=time.time()
 
 # fits the model on batches with real-time data augmentation:
-model.fit_generator(generate_next_batch(),samples_per_epoch=len(CenterIMGPath), nb_epoch=8)
+model.fit_generator(generate_next_batch(),samples_per_epoch=len(CenterIMGPath)*2, nb_epoch=8)
 
 
 
