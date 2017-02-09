@@ -19,7 +19,7 @@ from random import randint
 import tensorflow as tf
 import json
 
-iShowDebugPic =6
+iShowDebugPic =0
 def preprocess(image, top_offset=.375, bottom_offset=.125):
     """
     Applies preprocessing pipeline to an image: crops `top_offset` and `bottom_offset`
