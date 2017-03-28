@@ -51,13 +51,25 @@ The model.py file contains the code for training and saving the convolution neur
 
 ####1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model is based on the nvidia approach of "End to End Learning for Self-Driving Cars" https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+The model consits of a multi layer convolutional network and some fully connected layers.
+
+First input is a 40 x 160 x 3 image to a 5x5 convolulation layer with a relu activation, followed by a Dropout and MaxPooling filter.
+
+Second and third layers are also a   5x5 convolulation layer with a relu activation, followed by a Dropout and MaxPooling filter.
+
+The fourth and fifth layer is a 3x3 convolulation layer with a relu activation, followed by a Dropout and MaxPooling filter.
+
+After this the output is flatten to a fully connected layer (1164), also with a relu activation function. The following layers are reducing to the output size 1 (100, 50, 10,1).
+
+As optimizer is the ADAM optimizer used.
+
+
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model contains dropout layers in order to reduce overfitting (model.py lines 376 / 381 / 386 /395 / ). 
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
@@ -75,52 +87,66 @@ For details about how I created the training data, see the next section.
 
 ####1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+The overall strategy for deriving a model architecture was to ue the nvidia model.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+My first step was to use a convolution neural network model similar to the nvidia model. I thought this model might be appropriate because it was proving with real data and a real driving car. Also it was a good motivaiton to understand the technology nivida is using.
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model so that ...
+To combat the overfitting, I modified the model so that there is a high use od dropouts and high variation on input data.
 
-Then I ... 
+The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track. To improve this behavioir I shifted the images and created a virtual steering wheel angle to fake recovery situation.
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road, mostly.
 
 ####2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (model.py lines 370 - 418) consisted of a convolution neural network with the following layers and layer sizes:
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+The model consits of a multi layer convolutional network and some fully connected layers.
 
-![alt text][image1]
+First input is a 40 x 160 x 3 image to a 5x5 convolulation layer with a relu activation, followed by a Dropout and MaxPooling filter.
+
+Second and third layers are also a   5x5 convolulation layer with a relu activation, followed by a Dropout and MaxPooling filter.
+
+The fourth and fifth layer is a 3x3 convolulation layer with a relu activation, followed by a Dropout and MaxPooling filter.
+
+After this the output is flatten to a fully connected layer (1164), also with a relu activation function. The following layers are reducing to the output size 1 (100, 50, 10,1).
+
+A visualization can be found at nVidia page (https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf)
+
+
 
 ####3. Creation of the Training Set & Training Process
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
+For agumention the images and situation:
+- I used the orginal image (left / center / right) out of the simlator
+![alt text][image1]
+
+- The orginal image was croped to the region of interest, to remove influence of the sky
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
-
+- Then the images were resized a on left / right images were a virtual steeringwheel angle added respectively substracted
 ![alt text][image3]
+
+- For a hihger variation all images were randomly flipped and steering angle sign reveresed
+
 ![alt text][image4]
+
+- For a better recovery and relation of images on goning straight versus turning, images were shifted randomly.
 ![alt text][image5]
 
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+- To have also a variation on input for different light on the track, the brightness were also changed randomly on some images
 
 ![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I finally randomly shuffled the data set and putted it into batches 
+
+
+Finally there is a result with a good driving behavoir, but it is a high complex project and there is still a lot of issues to fix. But to get a first touch with behavoir cloning it is a very good project. 
+
+
