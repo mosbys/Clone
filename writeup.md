@@ -33,7 +33,7 @@ The goals / steps of this project are the following:
 My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
+* model.h5 - > latest version not on github -> too large with 76 MB
 * model.json
 * writeup_report.md or writeup_report.pdf summarizing the results
 
