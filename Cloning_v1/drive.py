@@ -17,6 +17,8 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 import cv2
 # Fix error with Keras and TensorFlow
 import tensorflow as tf
+import matplotlib.pyplot as plt
+
 tf.python.control_flow_ops = tf
 
 
@@ -24,6 +26,8 @@ sio = socketio.Server()
 app = Flask(__name__)
 model = None
 prev_image_array = None
+
+iDebug = 0
 
 def preprocess(image, top_offset=.375, bottom_offset=.125):
     """
@@ -33,6 +37,8 @@ def preprocess(image, top_offset=.375, bottom_offset=.125):
     top = int(top_offset * image.shape[0])
     bottom = int(bottom_offset * image.shape[0])
     image = image[top:-bottom, :]
+    newShape = image.shape
+    image= cv2.resize(image,(int(newShape[1]/2), int(newShape[0]/2)), interpolation = cv2.INTER_CUBIC)
     return image
 
 
@@ -49,8 +55,13 @@ def telemetry(sid, data):
     image = Image.open(BytesIO(base64.b64decode(imgString)))
     image_array = np.asarray(image)
     image_array=preprocess(image_array)
-    image_array=cv2.resize(image_array,(2*64, 64),interpolation=cv2.INTER_CUBIC)
+    
+    newShape = image_array.shape
+    #image_array=cv2.resize(image_array,(newShape[1], newShape[0]),interpolation=cv2.INTER_CUBIC)
     transformed_image_array = image_array[None, :, :, :]
+    if (iDebug==1):
+        plt.imshow(image_array)
+        plt.show()
     #transformed_image_array2 = np.zeros([1,2*64,64,3])
     #transformed_image_array2[0]=cv2.resize(transformed_image_array[0],(2*64, 64),interpolation=cv2.INTER_CUBIC)
     # This model currently assumes that the features of the model are just the images. Feel free to change this.
