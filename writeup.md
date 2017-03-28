@@ -147,6 +147,6 @@ For agumention the images and situation:
 I finally randomly shuffled the data set and putted it into batches 
 
 
-Finally there is a result with a good driving behavoir, but it is a high complex project and there is still a lot of issues to fix. But to get a first touch with behavoir cloning it is a very good project. 
+Finally there is a result with a good driving behavoir, but it is a high complex project and there is still a lot of issues to fix. But to get a first touch with behavoir cloning it is a very good project. A lot of input, help and support was used from other repository and slackline. 
 
 
